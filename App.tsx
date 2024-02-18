@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-export default function App() {
+import Home from './screens/Home';
+import Details from './screens/Details';
+import { useState } from 'react';
+import { CountryProps } from './types';
+
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+  const [countries, setCountries] = useState<CountryProps[]>([]);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" options={{ title: 'Where in the world?' }}>
+          {(props) => <Home {...props} countries={countries} setCountries={setCountries} />}
+        </Stack.Screen>
+        <Stack.Screen name="Details" component={Details} options={{ title: 'Country' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
